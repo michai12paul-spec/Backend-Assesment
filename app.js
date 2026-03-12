@@ -1,6 +1,7 @@
 import express from 'express';
 import { PORT } from './config.js';
 import { getListings } from './getListings.js';
+import { details } from './getDetails.js';
 
 const app = express();
 
@@ -23,5 +24,14 @@ app.get('/listings/:page', (req, res) => {
     } 
     page = (page - 1) * pageSize
         getListings(res, page)
+})
+
+app.get('/domain/details/:id', (req, res) => {
+    const id = req.params.id
+    if (isNaN(id)) {
+        res.status(400).json({ error: 'Invalid ID' })
+        return
+    }
+    details(res, id)
 })
 
